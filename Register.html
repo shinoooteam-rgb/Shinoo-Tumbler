@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - Shinoo Tumbler</title>
+
+  <!-- Google Fonts Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="Shinoo.css" />
+
+</head>
+
+<body>
+  <header>
+    <img src="Shinoo.png" alt="Shinoo Logo" />
+    <nav>
+      <a href="Tumbler.html">Home</a>
+      <a href="Shop.html">Shop</a>
+      <a href="Contact.html">Contact</a>
+      <a href="More Info.html">More Info</a>
+      <a href="Feedback.html">Feedback</a>
+      <a href="Register.html" class="active">Register Now!</a>
+    </nav>
+  </header>
+
+  <div class="contents">
+    <div class="container">
+      <!-- Map Section -->
+      <section class="map-section">
+        <h2>Your Location</h2>
+        <div id="mapContainer">
+          <div id="map" style="width: 100%; height: 100%;"></div>
+        </div>
+      </section>
+
+      <!-- Form Section -->
+      <section class="form-section">
+        <h1>Register</h1>
+        <form id="registerForm" novalidate>
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" required />
+          <div class="error-message" id="fullnameError"></div>
+
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required />
+          <div class="error-message" id="emailError"></div>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+          <div class="password-strength" id="passwordStrength"></div>
+          <div class="error-message" id="passwordError"></div>
+
+          <label for="address">Address (Lat, Lng)</label>
+          <input type="text" id="address" name="address" readonly required />
+          <div class="error-message" id="addressError"></div>
+
+          <button type="submit" id="registerBtn" disabled>Register</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&callback=initMap" async defer></script>
+
+  <script>
+    // Initialize Google Map with draggable marker
+    let map, marker;
+
+    function initMap() {
+      const defaultLocation = { lat: 40.7128, lng: -74.0060 }; // New York City
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: defaultLocation,
+      });
+
+      marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true,
+        title: "Drag to your location",
+      });
+
+      // Set initial address input value
+      updateAddressInput(defaultLocation);
+
+      // Update address input when marker is dragged
+      marker.addListener("dragend", () => {
+        const pos = marker.getPosition();
+        updateAddressInput({ lat: pos.lat(), lng: pos.lng() });
+        validateForm();
+      });
+    }
+
+    function updateAddressInput(position) {
+      document.getElementById("address").value =
+        position.lat.toFixed(5) + ", " + position.lng.toFixed(5);
+    }
+
+    // Form validation and password strength check
+    const form = document.getElementById("registerForm");
+    const fullnameInput = document.getElementById("fullname");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const addressInput = document.getElementById("address");
+    const registerBtn = document.getElementById("registerBtn");
+
+    const fullnameError = document.getElementById("fullnameError");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const passwordStrength = document.getElementById("passwordStrength");
+    const addressError = document.getElementById("addressError");
+
+    // Simple email regex for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Password strength function
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[\W]/.test(password)) strength++;
+
+      if (strength <= 1) return "weak";
+      if (strength === 2 || strength === 3) return "medium";
+      if (strength === 4) return "strong";
+    }
+
+    function updatePasswordStrengthDisplay(strength) {
+      passwordStrength.textContent = "";
+      passwordStrength.className = "password-strength";
+
+      if (strength === "weak") {
+        passwordStrength.textContent = "Password strength: Weak";
+        passwordStrength.classList.add("strength-weak");
+      } else if (strength === "medium") {
+        passwordStrength.textContent = "Password strength: Medium";
+        passwordStrength.classList.add("strength-medium");
+      } else if (strength === "strong") {
+        passwordStrength.textContent = "Password strength: Strong";
+        passwordStrength.classList.add("strength-strong");
+      }
+    }
+
+    function validateForm() {
+      let valid = true;
+
+      // Validate fullname
+      if (fullnameInput.value.trim() === "") {
+        fullnameError.textContent = "Full name is required.";
+        valid = false;
+      } else {
+        fullnameError.textContent = "";
+      }
+
+      // Validate email
+      if (!emailRegex.test(emailInput.value.trim())) {
+        emailError.textContent = "Please enter a valid email address.";
+        valid = false;
+      } else {
+        emailError.textContent = "";
+      }
+
+      // Validate password
+      const pwd = passwordInput.value;
+      if (pwd.length < 8) {
+        passwordError.textContent = "Password must be at least 8 characters.";
+        valid = false;
+      } else {
+        passwordError.textContent = "";
+      }
+
+      // Validate address (should not be empty)
+      if (addressInput.value.trim() === "") {
+        addressError.textContent = "Address is required.";
+        valid = false;
+      } else {
+        addressError.textContent = "";
+      }
+
+      // Enable or disable register button
+      registerBtn.disabled = !valid;
+
+      return valid;
+    }
+
+    // Event listeners for validation
+    fullnameInput.addEventListener("input", validateForm);
+    emailInput.addEventListener("input", validateForm);
+    passwordInput.addEventListener("input", () => {
+      const strength = checkPasswordStrength(passwordInput.value);
+      updatePasswordStrengthDisplay(strength);
+      validateForm();
+    });
+
+    // On form submit
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!validateForm()) return;
+
+      // Redirect to your provided page on successful registration
+      window.location.href = "Tumbler.html";
+    });
+  </script>
+</body>
+
+</html>

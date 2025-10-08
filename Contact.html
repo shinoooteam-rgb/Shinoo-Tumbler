@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Shinoo Tumbler</title>
+  <link rel="stylesheet" href="Shinoo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header (Same as Before) -->
+  <header>
+    <img src="Shinoo.png" alt="Shinoo Logo">
+    <nav>
+      
+      <a href="Tumbler.html">Home</a>
+
+      <a href="Shop.html">Shop</a>
+
+      <a href="Contact.html" class="active">Contact</a>
+
+      <a href="More Info.html">More Info</a>
+
+      <a href="Feedback.html">Feedback</a> 
+
+      <a href="Register.html">Register Now!</a>
+  
+    </nav>
+  </header>
+
+  <div class="contents">
+    <!-- FAQ Section -->
+    <div class="container">
+      <h1>FAQs & Get in Touch 🌸</h1>
+      <p style="text-align: center; color: #555; margin-bottom: 30px;">Check our common questions below, or send us a message for personalized help!</p>
+      
+      <!-- Animated FAQ Accordion -->
+      <div class="faq-accordion">
+        <!-- FAQ 1 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-icon">💧</span>
+            <h3>How do I clean my Shinoo tumbler?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Use warm soapy water and a soft brush. Avoid dishwasher for floral designs to keep them vibrant! Eco-tip: Air dry to save energy. 🌿</p>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-icon">♻️</span>
+            <h3>Are your tumblers eco-friendly?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Yes! Made from recycled stainless steel and BPA-free materials. Each tumbler saves 500 plastic bottles from landfills. Join the hydration revolution! 💖</p>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-icon">⏰</span>
+            <h3>What if my order is delayed?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Most orders ship in 2-3 days. Track via email. If delayed, we'll send a free sticker pack as apology! Contact us for updates.</p>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-icon">❓</span>
+            <h3>Can I customize a tumbler?</h3>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-answer">
+            <p>Coming soon! For now, choose from our pastel florals. Suggest designs via feedback—we love ideas! 🌸</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="product-container">
+      <h2 class="product-title">Still Need Help? Message Us</h2>
+      <form id="contactForm" novalidate style="max-width: 500px; margin: 0 auto;">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+        <div id="nameError" class="error-message"></div>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+        <div id="emailError" class="error-message"></div>
+
+        <label for="subject">Subject</label>
+        <select id="subject" name="subject" required style="padding: 12px; border: 2px solid #99ccff; border-radius: 10px; font-family: inherit;">
+          <option value="">Select...</option>
+          <option value="Order Inquiry">Order Inquiry</option>
+          <option value="Product Question">Product Question</option>
+          <option value="Shipping Issue">Shipping Issue</option>
+          <option value="Other">Other</option>
+        </select>
+        <div id="subjectError" class="error-message"></div>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+        <div id="messageError" class="error-message"></div>
+
+        <button type="submit" id="submitContact" disabled>Send Message 🌸</button>
+      </form>
+      <div id="successMessage" style="display: none; text-align: center; margin-top: 15px; color: #34a853; font-weight: 600;">Thank you! Message sent—expect a reply in 24 hours! 💧</div>
+    </div>
+  </div>
+
+  <!-- Footer (Same as Before) -->
+  <footer>
+    <div class="site-info">
+      <h3>Shinoo</h3>
+      <div class="topics">
+        <span>About</span>
+        <span>Shop</span>
+        <span>Contact</span>
+        <span>FAQs</span>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#">Facebook</a>
+      <a href="#">Tiktok</a>
+      <a href="#">Instagram</a>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ Accordion JS
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const toggle = question.querySelector('.faq-toggle');
+        const isOpen = answer.style.display === 'block';
+        
+        // Close all others
+        document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+        document.querySelectorAll('.faq-toggle').forEach(t => t.textContent = '+');
+        
+        // Toggle current
+        if (isOpen) {
+          answer.style.display = 'none';
+          toggle.textContent = '+';
+        } else {
+          answer.style.display = 'block';
+          toggle.textContent = '−';
+        }
+      });
+    });
+
+    // Contact Form Validation (Simplified from Previous)
+    (function() {
+      const form = document.getElementById('contactForm');
+      const inputs = form.querySelectorAll('input, select, textarea');
+      const submitBtn = document.getElementById('submitContact');
+      const successMessage = document.getElementById('successMessage');
+
+      function validateForm() {
+        let valid = true;
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            valid = false;
+          }
+        });
+        if (!form.email.value.includes('@')) valid = false;
+        submitBtn.disabled = !valid;
+      }
+
+      inputs.forEach(input => input.addEventListener('input', validateForm));
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!submitBtn.disabled) {
+          alert('Message sent! 🌸');
+          successMessage.style.display = 'block';
+          setTimeout(() => successMessage.style.display = 'none', 3000);
+          form.reset();
+          submitBtn.disabled = true;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
